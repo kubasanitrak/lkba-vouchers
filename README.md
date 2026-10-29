@@ -2,23 +2,33 @@
 
 Gift vouchers for Lenka Krejčová Barre Academy.
 
-Requires [`lkba-payments`](https://github.com/kubasanitrak/lkba-payments).
+Requires [`lkba-payments`](https://github.com/kubasanitrak/lkba-payments) ≥ 0.2.0 and Composer dependency **mpdf/mpdf** (installed on release zip).
 
 Repository: https://github.com/kubasanitrak/lkba-vouchers
 
 ## Status
 
-Phase 0 scaffold — schema, settings and shortcode shells only. PDF/validation arrive later.
+Phase 4 — voucher form, bank + Comgate, mPDF on paid, staff validation. Legacy `/darkovy-poukaz` PHP app stays until Phase 5.
 
-## Shortcodes (stubs)
+## Shortcodes
 
 | Shortcode | Purpose |
 |-----------|---------|
-| `[lkba_voucher_form]` | Gift voucher config / checkout form |
-| `[lkba_voucher_validate]` | Staff validation UI (capability-gated later) |
+| `[lkba_voucher_form]` | Config form + bank recap / Comgate redirect |
+| `[lkba_voucher_payment_success]` | Comgate return paid |
+| `[lkba_voucher_payment_failed]` | Comgate return fail |
+| `[lkba_voucher_validate]` | Staff validation (`edit_posts`) |
+
+Put `[lkba_voucher_form]` on the WP page that replaces `/darkovy-poukaz` content (theme page), without deleting the standalone app yet.
+
+## Local setup
+
+```bash
+composer install --no-dev
+```
 
 ## Releasing
 
-1. Bump `Version` and `LKBA_VOUCHERS_VERSION` in `lkba-vouchers.php`.
-2. Add a `## [x.y.z]` section to `CHANGELOG.md`.
-3. Push tag `v0.1.0` matching the header.
+1. Bump `Version` and `LKBA_VOUCHERS_VERSION`.
+2. Update `CHANGELOG.md`.
+3. Tag `v0.2.0`.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Voucher settings stub.
+ * Voucher settings.
  */
 
 if (!defined('ABSPATH')) {
@@ -10,12 +10,18 @@ if (!defined('ABSPATH')) {
 settings_errors('lkba_vouchers');
 
 $default_company = get_option(LKBA_Vouchers_Settings::OPTION_DEFAULT_COMPANY, 'company-1');
-$support_email   = get_option(LKBA_Vouchers_Settings::OPTION_SUPPORT_EMAIL, '');
+$support_email   = LKBA_Vouchers_Settings::get_support_email();
 $sender_name     = get_option(LKBA_Vouchers_Settings::OPTION_SENDER_NAME, '');
-$sender_email    = get_option(LKBA_Vouchers_Settings::OPTION_SENDER_EMAIL, '');
+$sender_email    = LKBA_Vouchers_Settings::get_sender_email();
 $terms_page      = (int) get_option(LKBA_Vouchers_Settings::OPTION_TERMS_PAGE, 0);
 $privacy_page    = (int) get_option(LKBA_Vouchers_Settings::OPTION_PRIVACY_PAGE, 0);
 $storno_page     = (int) get_option(LKBA_Vouchers_Settings::OPTION_STORNO_PAGE, 0);
+$success_page    = (int) get_option(LKBA_Vouchers_Settings::OPTION_SUCCESS_PAGE, 0);
+$failed_page     = (int) get_option(LKBA_Vouchers_Settings::OPTION_FAILED_PAGE, 0);
+$validate_page   = (int) get_option(LKBA_Vouchers_Settings::OPTION_VALIDATE_PAGE, 0);
+$bundle_discount = (int) get_option(LKBA_Vouchers_Settings::OPTION_BUNDLE_DISCOUNT, 430);
+$bundle_min      = (int) get_option(LKBA_Vouchers_Settings::OPTION_BUNDLE_MIN, 10);
+$bundle_base     = (int) get_option(LKBA_Vouchers_Settings::OPTION_BUNDLE_BASE, 450);
 $tiers_json      = wp_json_encode(LKBA_Vouchers_Settings::get_price_tiers(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 $company_choices = array();
@@ -25,7 +31,7 @@ if (class_exists('LKBA_Payments_Companies')) {
 ?>
 <div class="wrap">
     <h1><?php echo esc_html__('Nastavení poukazů', 'lkba-vouchers'); ?></h1>
-    <p><?php echo esc_html__('Phase 0 settings stubs. Prices are VAT-inclusive (decision §5).', 'lkba-vouchers'); ?></p>
+    <p><?php echo esc_html__('Phase 4 — price matrix, bank + Comgate, mPDF poukaz. Ceny vč. DPH.', 'lkba-vouchers'); ?></p>
 
     <form method="post" action="">
         <?php wp_nonce_field('lkba_vouchers_save_settings', 'lkba_vouchers_settings_nonce'); ?>
@@ -49,16 +55,31 @@ if (class_exists('LKBA_Payments_Companies')) {
                 </td>
             </tr>
             <tr>
-                <th scope="row"><label for="lkba_price_tiers_json"><?php echo esc_html__('Price tiers (JSON stub)', 'lkba-vouchers'); ?></label></th>
+                <th scope="row"><label for="lkba_price_tiers_json"><?php echo esc_html__('Price / entry matrix (JSON)', 'lkba-vouchers'); ?></label></th>
                 <td>
                     <textarea class="large-text code" rows="10" id="lkba_price_tiers_json" name="lkba_price_tiers_json"><?php echo esc_textarea($tiers_json); ?></textarea>
-                    <p class="description"><?php echo esc_html__('Legacy defaults: 450 → 1/5/10/20; 500 → 1/5/10. UI editor in Phase 4.', 'lkba-vouchers'); ?></p>
+                    <p class="description"><?php echo esc_html__('Legacy defaults: 450 → 1/5/10/20; 500 → 1/5/10.', 'lkba-vouchers'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php echo esc_html__('Bundle discount (legacy 430)', 'lkba-vouchers'); ?></th>
+                <td>
+                    <label><?php echo esc_html__('Base value', 'lkba-vouchers'); ?>
+                        <input type="number" class="small-text" name="lkba_bundle_base" value="<?php echo esc_attr((string) $bundle_base); ?>">
+                    </label>
+                    <label><?php echo esc_html__('Min entries', 'lkba-vouchers'); ?>
+                        <input type="number" class="small-text" name="lkba_bundle_min" value="<?php echo esc_attr((string) $bundle_min); ?>">
+                    </label>
+                    <label><?php echo esc_html__('Discounted unit', 'lkba-vouchers'); ?>
+                        <input type="number" class="small-text" name="lkba_bundle_discount" value="<?php echo esc_attr((string) $bundle_discount); ?>">
+                    </label>
+                    <p class="description"><?php echo esc_html__('When base tier + min entries and “all lessons” unchecked → discounted unit price.', 'lkba-vouchers'); ?></p>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><label for="lkba_support_email"><?php echo esc_html__('Support e-mail', 'lkba-vouchers'); ?></label></th>
                 <td>
-                    <input type="email" class="regular-text" id="lkba_support_email" name="lkba_support_email" value="<?php echo esc_attr($support_email !== '' ? $support_email : 'rezervace@barreacademy.cz'); ?>">
+                    <input type="email" class="regular-text" id="lkba_support_email" name="lkba_support_email" value="<?php echo esc_attr($support_email); ?>">
                     <p class="description"><?php echo esc_html__('Default: rezervace@barreacademy.cz', 'lkba-vouchers'); ?></p>
                 </td>
             </tr>
@@ -72,30 +93,36 @@ if (class_exists('LKBA_Payments_Companies')) {
             </tr>
             <tr>
                 <th scope="row"><?php echo esc_html__('Terms page', 'lkba-vouchers'); ?></th>
-                <td><?php wp_dropdown_pages(array(
-                    'name'              => 'lkba_terms_page',
-                    'selected'          => $terms_page,
-                    'show_option_none'  => __('— Select —', 'lkba-vouchers'),
-                    'option_none_value' => '0',
-                )); ?></td>
+                <td><?php wp_dropdown_pages(array('name' => 'lkba_terms_page', 'selected' => $terms_page, 'show_option_none' => __('— Select —', 'lkba-vouchers'), 'option_none_value' => '0')); ?></td>
             </tr>
             <tr>
                 <th scope="row"><?php echo esc_html__('Privacy page', 'lkba-vouchers'); ?></th>
-                <td><?php wp_dropdown_pages(array(
-                    'name'              => 'lkba_privacy_page',
-                    'selected'          => $privacy_page,
-                    'show_option_none'  => __('— Select —', 'lkba-vouchers'),
-                    'option_none_value' => '0',
-                )); ?></td>
+                <td><?php wp_dropdown_pages(array('name' => 'lkba_privacy_page', 'selected' => $privacy_page, 'show_option_none' => __('— Select —', 'lkba-vouchers'), 'option_none_value' => '0')); ?></td>
             </tr>
             <tr>
                 <th scope="row"><?php echo esc_html__('Storno page', 'lkba-vouchers'); ?></th>
-                <td><?php wp_dropdown_pages(array(
-                    'name'              => 'lkba_storno_page',
-                    'selected'          => $storno_page,
-                    'show_option_none'  => __('— Select —', 'lkba-vouchers'),
-                    'option_none_value' => '0',
-                )); ?></td>
+                <td><?php wp_dropdown_pages(array('name' => 'lkba_storno_page', 'selected' => $storno_page, 'show_option_none' => __('— Select —', 'lkba-vouchers'), 'option_none_value' => '0')); ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?php echo esc_html__('Payment success page', 'lkba-vouchers'); ?></th>
+                <td>
+                    <?php wp_dropdown_pages(array('name' => 'lkba_success_page', 'selected' => $success_page, 'show_option_none' => __('— Select —', 'lkba-vouchers'), 'option_none_value' => '0')); ?>
+                    <p class="description">[lkba_voucher_payment_success]</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php echo esc_html__('Payment failed page', 'lkba-vouchers'); ?></th>
+                <td>
+                    <?php wp_dropdown_pages(array('name' => 'lkba_failed_page', 'selected' => $failed_page, 'show_option_none' => __('— Select —', 'lkba-vouchers'), 'option_none_value' => '0')); ?>
+                    <p class="description">[lkba_voucher_payment_failed]</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php echo esc_html__('Validation page (QR target)', 'lkba-vouchers'); ?></th>
+                <td>
+                    <?php wp_dropdown_pages(array('name' => 'lkba_validate_page', 'selected' => $validate_page, 'show_option_none' => __('— Select —', 'lkba-vouchers'), 'option_none_value' => '0')); ?>
+                    <p class="description">[lkba_voucher_validate] — staff only (edit_posts)</p>
+                </td>
             </tr>
         </table>
 

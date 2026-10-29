@@ -17,6 +17,13 @@ class LKBA_Vouchers_Loader {
         require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-activator.php';
         require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-db.php';
         require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-settings.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-session.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-orders.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-pdf.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-emails.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-payments.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-checkout.php';
+        require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-migrate.php';
         require_once LKBA_VOUCHERS_PLUGIN_DIR . 'includes/class-lkba-vouchers-shortcodes.php';
 
         if (is_admin()) {
@@ -31,6 +38,8 @@ class LKBA_Vouchers_Loader {
         LKBA_Vouchers_DB::maybe_upgrade();
 
         new LKBA_Vouchers_Settings();
+        LKBA_Vouchers_Payments::boot();
+        new LKBA_Vouchers_Checkout();
         new LKBA_Vouchers_Shortcodes();
         new LKBA_Vouchers_Public();
 
