@@ -9,6 +9,8 @@ if (!defined('ABSPATH')) {
 
 class LKBA_Vouchers_Settings {
 
+    const DEFAULT_SUPPORT_EMAIL = 'rezervace@barreacademy.cz';
+
     const OPTION_DEFAULT_COMPANY = 'lkba_vouchers_default_company_id';
     const OPTION_PRICE_TIERS     = 'lkba_vouchers_price_tiers';
     const OPTION_SUPPORT_EMAIL   = 'lkba_vouchers_support_email';
@@ -29,9 +31,9 @@ class LKBA_Vouchers_Settings {
 
         $defaults = array(
             self::OPTION_DEFAULT_COMPANY => 'company-1',
-            self::OPTION_SUPPORT_EMAIL   => '',
+            self::OPTION_SUPPORT_EMAIL   => self::DEFAULT_SUPPORT_EMAIL,
             self::OPTION_SENDER_NAME     => 'Lenka Krejčová Barre Academy',
-            self::OPTION_SENDER_EMAIL    => '',
+            self::OPTION_SENDER_EMAIL    => self::DEFAULT_SUPPORT_EMAIL,
             self::OPTION_TERMS_PAGE      => 0,
             self::OPTION_PRIVACY_PAGE    => 0,
             self::OPTION_STORNO_PAGE     => 0,
@@ -41,6 +43,13 @@ class LKBA_Vouchers_Settings {
             if (false === get_option($key, false)) {
                 add_option($key, $value);
             }
+        }
+
+        if ((string) get_option(self::OPTION_SUPPORT_EMAIL, '') === '') {
+            update_option(self::OPTION_SUPPORT_EMAIL, self::DEFAULT_SUPPORT_EMAIL);
+        }
+        if ((string) get_option(self::OPTION_SENDER_EMAIL, '') === '') {
+            update_option(self::OPTION_SENDER_EMAIL, self::DEFAULT_SUPPORT_EMAIL);
         }
     }
 

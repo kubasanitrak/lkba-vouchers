@@ -57,7 +57,10 @@ if (class_exists('LKBA_Payments_Companies')) {
             </tr>
             <tr>
                 <th scope="row"><label for="lkba_support_email"><?php echo esc_html__('Support e-mail', 'lkba-vouchers'); ?></label></th>
-                <td><input type="email" class="regular-text" id="lkba_support_email" name="lkba_support_email" value="<?php echo esc_attr($support_email); ?>" placeholder="<?php echo esc_attr__('TBD', 'lkba-vouchers'); ?>"></td>
+                <td>
+                    <input type="email" class="regular-text" id="lkba_support_email" name="lkba_support_email" value="<?php echo esc_attr($support_email !== '' ? $support_email : 'rezervace@barreacademy.cz'); ?>">
+                    <p class="description"><?php echo esc_html__('Default: rezervace@barreacademy.cz', 'lkba-vouchers'); ?></p>
+                </td>
             </tr>
             <tr>
                 <th scope="row"><label for="lkba_sender_name"><?php echo esc_html__('Sender name', 'lkba-vouchers'); ?></label></th>
