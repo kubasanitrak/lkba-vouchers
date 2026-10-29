@@ -1,0 +1,7 @@
+{
+    "name": "kubasanitrak/lkba-vouchers",
+    "description": "LKBA gift vouchers for WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {}
+}
