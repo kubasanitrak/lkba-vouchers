@@ -19,6 +19,8 @@
   var allInput = document.getElementById('lkba_all_lessons');
   var up = root.querySelector('.lkba-qty-up');
   var down = root.querySelector('.lkba-qty-down');
+  var giftToggle = document.getElementById('lkba_is_gift');
+  var invoiceToggle = document.getElementById('lkba_want_invoice');
 
   function selectedValue() {
     var r = root.querySelector('input[name="lkba_value"]:checked');
@@ -50,7 +52,6 @@
       }
       return list[0];
     }
-    // nearest
     var best = list[0];
     var bestDiff = Math.abs(current - best);
     for (var k = 1; k < list.length; k++) {
@@ -70,23 +71,35 @@
     return value;
   }
 
+  function setAllLessonsVisible(show) {
+    if (!allRow) return;
+    // Legacy darkovy-poukaz uses .slideUp / .slideUP collapse.
+    allRow.classList.toggle('slideUp', !show);
+    allRow.classList.toggle('slideUP', !show);
+    allRow.hidden = false;
+    if (!show && allInput) allInput.checked = false;
+  }
+
+  function toggleRolled(groupSel, open) {
+    root.querySelectorAll(groupSel).forEach(function (el) {
+      el.classList.toggle('rolled-up', !open);
+    });
+  }
+
   function update() {
     var value = selectedValue();
     var list = allowedEntries(value);
     var entries = snapEntries(list, parseInt(entriesInput.value, 10) || 1, 0);
     entriesInput.value = String(entries);
     if (hint) {
-      hint.textContent = '(' + list.join(', ') + ')';
+      hint.textContent = ' (' + list.join(', ') + ')';
     }
     var showBundle = value === bundleBase && entries >= bundleMin;
-    if (allRow) {
-      allRow.hidden = !showBundle;
-      if (!showBundle && allInput) allInput.checked = false;
-    }
+    setAllLessonsVisible(showBundle);
     var unit = unitPrice(value, entries, !!(allInput && allInput.checked));
     var total = unit * entries;
     if (totalEl) {
-      totalEl.textContent = new Intl.NumberFormat('cs-CZ').format(total) + ' Kč';
+      totalEl.textContent = ' · ' + new Intl.NumberFormat('cs-CZ').format(total) + ' Kč';
     }
   }
 
@@ -96,18 +109,31 @@
   if (entriesInput) entriesInput.addEventListener('change', update);
   if (allInput) allInput.addEventListener('change', update);
 
-  if (up) {
-    up.addEventListener('click', function () {
+  function bindQty(el, dir) {
+    if (!el) return;
+    el.addEventListener('click', function () {
       var list = allowedEntries(selectedValue());
-      entriesInput.value = String(snapEntries(list, parseInt(entriesInput.value, 10) || 1, 1));
+      entriesInput.value = String(snapEntries(list, parseInt(entriesInput.value, 10) || 1, dir));
       update();
     });
+    el.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        el.click();
+      }
+    });
   }
-  if (down) {
-    down.addEventListener('click', function () {
-      var list = allowedEntries(selectedValue());
-      entriesInput.value = String(snapEntries(list, parseInt(entriesInput.value, 10) || 1, -1));
-      update();
+  bindQty(up, 1);
+  bindQty(down, -1);
+
+  if (giftToggle) {
+    giftToggle.addEventListener('change', function () {
+      toggleRolled('.optional-gift', giftToggle.checked);
+    });
+  }
+  if (invoiceToggle) {
+    invoiceToggle.addEventListener('change', function () {
+      toggleRolled('.optional', invoiceToggle.checked);
     });
   }
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] — 2026-10-30
+
+### Changed
+
+- `[lkba_voucher_form]` markup aligned with legacy `darkovy-poukaz` (`signup-form` / `lesson-value` / `quantity` classes). POST names + payment/recap unchanged.
+
 ## [0.2.0] — 2026-10-29
 
 ### Added

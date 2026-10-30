@@ -1,71 +1,40 @@
-.lkba-vouchers {
-  --lkba-green: #00573f;
-  --lkba-cream: #eee7d6;
-  color: #1a1a1a;
-  max-width: 40rem;
+/**
+ * Fallback / page-inline extras for [lkba_voucher_form].
+ * On lkba_theme, signup/voucher look comes from theme style.css;
+ * this file only covers collapse animation + light plugin hooks.
+ */
+
+.lkba-voucher-form .show-and-hide {
+  max-height: 10rem;
+  overflow: hidden;
+  transition: max-height 450ms ease-in-out;
 }
 
-.lkba-voucher-form__error {
-  background: #fde8e8;
-  border: 1px solid #e11;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
+.lkba-voucher-form .show-and-hide * {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
 }
 
-.lkba-voucher-form__value {
-  border: 1px solid var(--lkba-cream);
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+.lkba-voucher-form .slideUp,
+.lkba-voucher-form .slideUP {
+  max-height: 0;
 }
 
-.lkba-voucher-form__tier {
-  display: inline-block;
-  margin-right: 1rem;
+.lkba-voucher-form .slideUp *,
+.lkba-voucher-form .slideUP * {
+  opacity: 0;
 }
 
-.lkba-voucher-form__qty {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+.lkba-voucher-form .rolled-up {
+  height: 0;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  margin-bottom: -0.75rem !important;
 }
 
-.lkba-voucher-form__qty input {
-  width: 4rem;
-  text-align: center;
-}
-
-.lkba-voucher-form__qty button {
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid var(--lkba-cream);
-  background: #fff;
-  cursor: pointer;
-}
-
-.lkba-voucher-form__total {
-  font-size: 1.15rem;
-}
-
-.lkba-voucher-form input[type="text"],
-.lkba-voucher-form input[type="email"],
-.lkba-voucher-form input[type="number"] {
-  width: 100%;
-  max-width: 28rem;
-}
-
-.lkba-voucher-form__submit {
-  background: var(--lkba-green);
-  color: #fff;
-  border: 0;
-  padding: 0.65rem 1.2rem;
-  cursor: pointer;
-}
-
-.lkba-voucher-form__payment,
-.lkba-voucher-form__invoice {
-  margin: 1rem 0;
-  border: 1px solid var(--lkba-cream);
-  padding: 0.75rem 1rem;
+.lkba-voucher-form__error h2 {
+  margin-top: 0;
 }
 
 .lkba-voucher-recap__instructions {
@@ -78,5 +47,5 @@
 }
 
 .lkba-voucher-validate__notice {
-  color: var(--lkba-green);
+  color: var(--LKBA-green, #00573f);
 }
