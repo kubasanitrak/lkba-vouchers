@@ -141,9 +141,23 @@
   var payToggle = document.getElementById('lkba_voucher_payment_toggle');
   var payLabelBank = document.getElementById('lkba_voucher_toggle_bank');
   var payLabelCard = document.getElementById('lkba_voucher_toggle_card');
+  var payStatus = document.getElementById('lkba_voucher_pay_status');
+  var payBankText = (payStatus && payStatus.getAttribute('data-bank-label')) || 'Platba převodem (QR / proforma)';
+  var payCardText = (payStatus && payStatus.getAttribute('data-card-label')) || 'Platba kartou (Comgate)';
+  function setPayLabelState(el, on) {
+    if (!el) return;
+    el.classList.toggle('active', on);
+    el.classList.toggle('inactive', !on);
+  }
   function writePay() {
     if (!payHidden || !payToggle) return;
-    payHidden.value = payToggle.checked ? 'comgate' : 'bank_transfer';
+    var card = !!payToggle.checked;
+    payHidden.value = card ? 'comgate' : 'bank_transfer';
+    setPayLabelState(payLabelBank, !card);
+    setPayLabelState(payLabelCard, card);
+    if (payStatus) {
+      payStatus.textContent = card ? payCardText : payBankText;
+    }
   }
   if (payToggle) {
     payToggle.addEventListener('change', writePay);

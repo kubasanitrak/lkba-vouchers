@@ -177,7 +177,7 @@ $gift_open  = $d_gift !== '';
                                    value="<?php echo esc_attr($d_method); ?>">
                             <div class="card-toggle--row lkba-payment-toggle" id="lkba_voucher_payment_toggle_row">
                                 <div class="card-toggle--column">
-                                    <p class="card-toggle--label card-toggle--label_false" id="lkba_voucher_toggle_bank"><?php echo esc_html__('Převodem', 'lkba-vouchers'); ?></p>
+                                    <p class="card-toggle--label card-toggle--label_false <?php echo $v_card_on ? 'inactive' : 'active'; ?>" id="lkba_voucher_toggle_bank"><?php echo esc_html__('Převodem', 'lkba-vouchers'); ?></p>
                                 </div>
                                 <label class="switch" for="lkba_voucher_payment_toggle">
                                     <input type="checkbox" id="lkba_voucher_payment_toggle"
@@ -186,9 +186,14 @@ $gift_open  = $d_gift !== '';
                                     <span class="slider round"></span>
                                 </label>
                                 <div class="card-toggle--column">
-                                    <p class="card-toggle--label card-toggle--label_true" id="lkba_voucher_toggle_card"><?php echo esc_html__('Kartou', 'lkba-vouchers'); ?></p>
+                                    <p class="card-toggle--label card-toggle--label_true <?php echo $v_card_on ? 'active' : 'inactive'; ?>" id="lkba_voucher_toggle_card"><?php echo esc_html__('Kartou', 'lkba-vouchers'); ?></p>
                                 </div>
                             </div>
+                            <p class="lkba-voucher-form__pay-status plain taC" id="lkba_voucher_pay_status"
+                               data-bank-label="<?php echo esc_attr__('Platba převodem (QR / proforma)', 'lkba-vouchers'); ?>"
+                               data-card-label="<?php echo esc_attr__('Platba kartou (Comgate)', 'lkba-vouchers'); ?>">
+                                <?php echo esc_html($v_card_on ? __('Platba kartou (Comgate)', 'lkba-vouchers') : __('Platba převodem (QR / proforma)', 'lkba-vouchers')); ?>
+                            </p>
                         </div>
                     <?php else : ?>
                         <input type="hidden" name="lkba_payment_method" value="<?php echo esc_attr($methods[0] ?? 'bank_transfer'); ?>">
