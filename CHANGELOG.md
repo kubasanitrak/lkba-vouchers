@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.2] — 2026-11-11
+
+### Changed
+
+- Payment chooser: legacy swipe slider (`Převodem` / `Kartou`) when both bank + card allowed; still POSTs `lkba_payment_method`.
+
 ## [0.2.1] — 2026-10-30
 
 ### Changed

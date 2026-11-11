@@ -137,5 +137,32 @@
     });
   }
 
+  var payHidden = document.getElementById('lkba_voucher_payment_method');
+  var payToggle = document.getElementById('lkba_voucher_payment_toggle');
+  var payLabelBank = document.getElementById('lkba_voucher_toggle_bank');
+  var payLabelCard = document.getElementById('lkba_voucher_toggle_card');
+  function writePay() {
+    if (!payHidden || !payToggle) return;
+    payHidden.value = payToggle.checked ? 'comgate' : 'bank_transfer';
+  }
+  if (payToggle) {
+    payToggle.addEventListener('change', writePay);
+    writePay();
+  }
+  if (payLabelBank) {
+    payLabelBank.addEventListener('click', function () {
+      if (!payToggle) return;
+      payToggle.checked = false;
+      writePay();
+    });
+  }
+  if (payLabelCard) {
+    payLabelCard.addEventListener('click', function () {
+      if (!payToggle) return;
+      payToggle.checked = true;
+      writePay();
+    });
+  }
+
   update();
 })();

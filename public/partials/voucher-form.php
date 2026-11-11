@@ -165,21 +165,30 @@ $gift_open  = $d_gift !== '';
                         <input type="text" name="lkba_inv_dic" id="lkba_inv_dic" placeholder="DIČ" value="<?php echo esc_attr($d_inv['dic'] ?? ''); ?>">
                     </div>
 
-                    <?php if (count($methods) > 1) : ?>
+                    <?php
+                    $v_has_bank = in_array('bank_transfer', $methods, true);
+                    $v_has_card = in_array('comgate', $methods, true);
+                    $v_both_pay = $v_has_bank && $v_has_card;
+                    $v_card_on  = $d_method === 'comgate';
+                    ?>
+                    <?php if ($v_both_pay) : ?>
                         <div class="signup-form--inner_row flex-col lkba-voucher-form__payment">
-                            <label><?php echo esc_html__('Způsob platby', 'lkba-vouchers'); ?> <span style="color: red;">*</span></label>
-                            <?php if (in_array('bank_transfer', $methods, true)) : ?>
-                                <div class="form-group">
-                                    <input type="radio" name="lkba_payment_method" id="lkba_pay_bank" value="bank_transfer" <?php checked($d_method, 'bank_transfer'); ?>>
-                                    <label for="lkba_pay_bank"><?php echo esc_html__('Bankovní převod (QR / proforma)', 'lkba-vouchers'); ?></label>
+                            <input type="hidden" name="lkba_payment_method" id="lkba_voucher_payment_method"
+                                   value="<?php echo esc_attr($d_method); ?>">
+                            <div class="card-toggle--row lkba-payment-toggle" id="lkba_voucher_payment_toggle_row">
+                                <div class="card-toggle--column">
+                                    <p class="card-toggle--label card-toggle--label_false" id="lkba_voucher_toggle_bank"><?php echo esc_html__('Převodem', 'lkba-vouchers'); ?></p>
                                 </div>
-                            <?php endif; ?>
-                            <?php if (in_array('comgate', $methods, true)) : ?>
-                                <div class="form-group">
-                                    <input type="radio" name="lkba_payment_method" id="lkba_pay_card" value="comgate" <?php checked($d_method, 'comgate'); ?>>
-                                    <label for="lkba_pay_card"><?php echo esc_html__('Platební karta (Comgate)', 'lkba-vouchers'); ?></label>
+                                <label class="switch" for="lkba_voucher_payment_toggle">
+                                    <input type="checkbox" id="lkba_voucher_payment_toggle"
+                                           <?php checked($v_card_on); ?>
+                                           aria-label="<?php echo esc_attr__('Způsob platby', 'lkba-vouchers'); ?>">
+                                    <span class="slider round"></span>
+                                </label>
+                                <div class="card-toggle--column">
+                                    <p class="card-toggle--label card-toggle--label_true" id="lkba_voucher_toggle_card"><?php echo esc_html__('Kartou', 'lkba-vouchers'); ?></p>
                                 </div>
-                            <?php endif; ?>
+                            </div>
                         </div>
                     <?php else : ?>
                         <input type="hidden" name="lkba_payment_method" value="<?php echo esc_attr($methods[0] ?? 'bank_transfer'); ?>">

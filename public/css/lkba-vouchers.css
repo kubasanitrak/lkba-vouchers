@@ -49,3 +49,85 @@
 .lkba-voucher-validate__notice {
   color: var(--LKBA-green, #00573f);
 }
+
+/* Legacy donate swipe toggle (_05.7-donate_REFERENCE) — not in compiled theme CSS. */
+.lkba-voucher-form {
+  --switch-BASE: 1.25rem;
+  --switch-bg: var(--LKBA-cream-dark, #cfc6b0);
+  --switch-active: var(--LKBA-green, #00573f);
+  --switch-C: var(--LKBA-cream, #eee7d6);
+}
+
+.lkba-voucher-form .card-toggle--row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 0 var(--pad-R, 1rem);
+}
+
+.lkba-voucher-form .card-toggle--column {
+  padding: 0 var(--pad-R, 1rem);
+}
+
+.lkba-voucher-form .card-toggle--label {
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lkba-voucher-form .switch {
+  position: relative;
+  display: inline-block;
+  width: calc(var(--switch-BASE) * 2.25);
+  height: calc(var(--switch-BASE) * 1.25);
+  flex-shrink: 0;
+}
+
+.lkba-voucher-form .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.lkba-voucher-form .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--switch-bg);
+  transition: 0.2s ease-out;
+}
+
+.lkba-voucher-form .slider::before {
+  position: absolute;
+  content: "";
+  height: var(--switch-BASE);
+  width: var(--switch-BASE);
+  left: calc(var(--switch-BASE) * 0.125);
+  bottom: calc(var(--switch-BASE) * 0.125);
+  background-color: var(--switch-C);
+  transition: 0.2s ease-out;
+}
+
+.lkba-voucher-form .switch input:checked + .slider {
+  background-color: var(--switch-active);
+}
+
+.lkba-voucher-form .switch input:checked + .slider::before {
+  transform: translateX(var(--switch-BASE));
+}
+
+.lkba-voucher-form .switch input:focus + .slider {
+  box-shadow: 0 0 1px var(--LKBA-dark, #111);
+}
+
+.lkba-voucher-form .slider.round {
+  border-radius: calc(var(--switch-BASE) * 1.25);
+}
+
+.lkba-voucher-form .slider.round::before {
+  border-radius: 50%;
+}
