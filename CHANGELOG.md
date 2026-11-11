@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.4] — 2026-11-11
+
+### Fixed
+
+- Payment swipe: reliably update `p.lkba-voucher-form__pay-status` on change/input/init.
+
 ## [0.2.3] — 2026-11-11
 
 ### Fixed
