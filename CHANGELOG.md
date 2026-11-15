@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.7] — 2026-11-15
+
+### Fixed
+
+- Payment tiles: `display:flex` no longer overrides `[hidden]`.
+- Offer Comgate in chooser when company has it enabled (credentials still required at gateway start).
+- Tile click explicitly checks radio + moves `.is-selected`.
+
 ## [0.2.6] — 2026-11-15
 
 ### Fixed

@@ -143,16 +143,23 @@
     var payRadios = payTiles.querySelectorAll('.lkba-pay-tile__input');
     for (var i = 0; i < payRadios.length; i++) {
       var tile = payRadios[i].closest('.lkba-pay-tile');
-      if (tile) tile.classList.toggle('is-selected', !!payRadios[i].checked);
+      if (tile) tile.classList.toggle('is-selected', !!payRadios[i].checked && !payRadios[i].disabled);
     }
   }
   if (payTiles) {
+    payTiles.addEventListener('click', function (e) {
+      var tile = e.target.closest('.lkba-pay-tile');
+      if (!tile || payTiles.hidden) return;
+      var input = tile.querySelector('.lkba-pay-tile__input');
+      if (!input || input.disabled) return;
+      e.preventDefault();
+      var all = payTiles.querySelectorAll('.lkba-pay-tile__input');
+      for (var j = 0; j < all.length; j++) {
+        all[j].checked = all[j] === input;
+      }
+      paintPaySelected();
+    });
     payTiles.addEventListener('change', paintPaySelected);
-    var payInputs = payTiles.querySelectorAll('.lkba-pay-tile__input');
-    for (var p = 0; p < payInputs.length; p++) {
-      payInputs[p].addEventListener('click', paintPaySelected);
-      payInputs[p].addEventListener('change', paintPaySelected);
-    }
     paintPaySelected();
   }
 
