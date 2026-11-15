@@ -177,7 +177,7 @@ $gift_open  = $d_gift !== '';
                                 <h2 class="section-title"><?php echo esc_html__('Zvolte způsob platby', 'lkba-vouchers'); ?></h2>
                             </div>
                             <div class="lkba-pay-tiles" id="lkba_voucher_pay_tiles">
-                                <label class="lkba-pay-tile" for="lkba_voucher_pay_bank">
+                                <label class="lkba-pay-tile<?php echo $d_method === 'bank_transfer' ? ' is-selected' : ''; ?>" for="lkba_voucher_pay_bank">
                                     <input class="lkba-pay-tile__input" type="radio"
                                            name="lkba_payment_method"
                                            id="lkba_voucher_pay_bank"
@@ -189,7 +189,7 @@ $gift_open  = $d_gift !== '';
                                         <span class="lkba-pay-tile__label"><?php echo esc_html__('Bankovní převod', 'lkba-vouchers'); ?></span>
                                     </span>
                                 </label>
-                                <label class="lkba-pay-tile" for="lkba_voucher_pay_card">
+                                <label class="lkba-pay-tile<?php echo $d_method === 'comgate' ? ' is-selected' : ''; ?>" for="lkba_voucher_pay_card">
                                     <input class="lkba-pay-tile__input" type="radio"
                                            name="lkba_payment_method"
                                            id="lkba_voucher_pay_card"

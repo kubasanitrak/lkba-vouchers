@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.6] — 2026-11-15
+
+### Fixed
+
+- Payment tiles: selected state sticks after click (`.is-selected` + `:has(:checked)` / `:checked` styles; JS syncs class on change).
+
 ## [0.2.5] — 2026-11-15
 
 ### Changed

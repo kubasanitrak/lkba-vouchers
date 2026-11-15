@@ -137,5 +137,24 @@
     });
   }
 
+  var payTiles = document.getElementById('lkba_voucher_pay_tiles') || root.querySelector('.lkba-pay-tiles');
+  function paintPaySelected() {
+    if (!payTiles) return;
+    var payRadios = payTiles.querySelectorAll('.lkba-pay-tile__input');
+    for (var i = 0; i < payRadios.length; i++) {
+      var tile = payRadios[i].closest('.lkba-pay-tile');
+      if (tile) tile.classList.toggle('is-selected', !!payRadios[i].checked);
+    }
+  }
+  if (payTiles) {
+    payTiles.addEventListener('change', paintPaySelected);
+    var payInputs = payTiles.querySelectorAll('.lkba-pay-tile__input');
+    for (var p = 0; p < payInputs.length; p++) {
+      payInputs[p].addEventListener('click', paintPaySelected);
+      payInputs[p].addEventListener('change', paintPaySelected);
+    }
+    paintPaySelected();
+  }
+
   update();
 })();
