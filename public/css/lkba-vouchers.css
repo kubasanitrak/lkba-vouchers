@@ -50,104 +50,91 @@
   color: var(--LKBA-green, #00573f);
 }
 
-/* Legacy donate swipe toggle (_05.7-donate_REFERENCE) — not in compiled theme CSS. */
+/* Payment method tiles — radio cards (bank / Comgate). */
 .lkba-voucher-form {
-  --switch-BASE: 1.25rem;
-  --switch-bg: var(--LKBA-cream-dark, #cfc6b0);
-  --switch-active: var(--LKBA-green, #00573f);
-  --switch-C: var(--LKBA-cream, #eee7d6);
+  --lkba-pay-green: var(--LKBA-green, #00573f);
+  --lkba-pay-cream: var(--LKBA-cream, #eee7d6);
 }
 
-.lkba-voucher-form .card-toggle--row {
+.lkba-voucher-form .lkba-pay-tiles {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
   width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 0 var(--pad-R, 1rem);
+  margin-top: 0.35rem;
 }
 
-.lkba-voucher-form .card-toggle--column {
-  padding: 0 var(--pad-R, 1rem);
-}
-
-.lkba-voucher-form .card-toggle--label {
+.lkba-voucher-form .lkba-pay-tile {
+  position: relative;
+  flex: 1 1 calc(50% - 0.5rem);
+  min-width: 9.5rem;
   margin: 0;
   cursor: pointer;
-  user-select: none;
-  color: var(--LKBA-green, #00573f);
-  opacity: 0.4;
-  font-weight: 400;
-  transition: opacity 0.2s ease-out, color 0.2s ease-out, font-weight 0.2s ease-out;
+  color: var(--lkba-pay-green);
 }
 
-.lkba-voucher-form .card-toggle--label.active {
-  opacity: 1;
-  font-weight: 700;
-  color: var(--LKBA-green, #00573f);
-}
-
-.lkba-voucher-form .card-toggle--label.inactive {
-  opacity: 0.4;
-  font-weight: 400;
-}
-
-.lkba-voucher-form .lkba-voucher-form__pay-status {
-  text-align: center;
-  margin-top: 0.75rem;
-}
-
-.lkba-voucher-form .switch {
-  position: relative;
-  display: inline-block;
-  width: calc(var(--switch-BASE) * 2.25);
-  height: calc(var(--switch-BASE) * 1.25);
-  flex-shrink: 0;
-}
-
-.lkba-voucher-form .switch input {
+.lkba-voucher-form .lkba-pay-tile__input {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
+  margin: 0;
+  pointer-events: none;
 }
 
-.lkba-voucher-form .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--switch-bg);
-  transition: 0.2s ease-out;
+.lkba-voucher-form .lkba-pay-tile__face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 6.75rem;
+  padding: 1rem 0.85rem 0.9rem;
+  border: 2px solid var(--lkba-pay-green);
+  background: transparent;
+  color: inherit;
+  text-align: center;
+  transition: background-color 0.18s ease-out, color 0.18s ease-out, border-color 0.18s ease-out;
 }
 
-.lkba-voucher-form .slider::before {
-  position: absolute;
-  content: "";
-  height: var(--switch-BASE);
-  width: var(--switch-BASE);
-  left: calc(var(--switch-BASE) * 0.125);
-  bottom: calc(var(--switch-BASE) * 0.125);
-  background-color: var(--switch-C);
-  transition: 0.2s ease-out;
+.lkba-voucher-form .lkba-pay-tile__icon {
+  display: block;
+  width: 2.75rem;
+  height: 2.15rem;
+  flex-shrink: 0;
 }
 
-.lkba-voucher-form .switch input:checked + .slider {
-  background-color: var(--switch-active);
+.lkba-voucher-form .lkba-pay-tile__icon--bank {
+  background-color: currentColor;
+  -webkit-mask: var(--lkba-pay-icon) center / contain no-repeat;
+  mask: var(--lkba-pay-icon) center / contain no-repeat;
 }
 
-.lkba-voucher-form .switch input:checked + .slider::before {
-  transform: translateX(var(--switch-BASE));
+.lkba-voucher-form .lkba-pay-tile__icon--card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: filter 0.18s ease-out;
 }
 
-.lkba-voucher-form .switch input:focus + .slider {
-  box-shadow: 0 0 1px var(--LKBA-dark, #111);
+.lkba-voucher-form .lkba-pay-tile__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: inherit;
 }
 
-.lkba-voucher-form .slider.round {
-  border-radius: calc(var(--switch-BASE) * 1.25);
+.lkba-voucher-form .lkba-pay-tile:hover .lkba-pay-tile__face,
+.lkba-voucher-form .lkba-pay-tile:focus-within .lkba-pay-tile__face,
+.lkba-voucher-form .lkba-pay-tile__input:checked + .lkba-pay-tile__face {
+  background-color: var(--lkba-pay-green);
+  border-color: var(--lkba-pay-green);
+  color: #fff;
 }
 
-.lkba-voucher-form .slider.round::before {
-  border-radius: 50%;
+.lkba-voucher-form .lkba-pay-tile:hover .lkba-pay-tile__icon--card img,
+.lkba-voucher-form .lkba-pay-tile:focus-within .lkba-pay-tile__icon--card img,
+.lkba-voucher-form .lkba-pay-tile__input:checked + .lkba-pay-tile__face .lkba-pay-tile__icon--card img {
+  filter: brightness(0) invert(1);
 }

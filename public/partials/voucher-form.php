@@ -169,31 +169,40 @@ $gift_open  = $d_gift !== '';
                     $v_has_bank = in_array('bank_transfer', $methods, true);
                     $v_has_card = in_array('comgate', $methods, true);
                     $v_both_pay = $v_has_bank && $v_has_card;
-                    $v_card_on  = $d_method === 'comgate';
+                    $pay_assets = LKBA_VOUCHERS_PLUGIN_URL . 'public/assets/payment/';
                     ?>
                     <?php if ($v_both_pay) : ?>
                         <div class="signup-form--inner_row flex-col lkba-voucher-form__payment">
-                            <input type="hidden" name="lkba_payment_method" id="lkba_voucher_payment_method"
-                                   value="<?php echo esc_attr($d_method); ?>">
-                            <div class="card-toggle--row lkba-payment-toggle" id="lkba_voucher_payment_toggle_row">
-                                <div class="card-toggle--column">
-                                    <p class="card-toggle--label card-toggle--label_false <?php echo $v_card_on ? 'inactive' : 'active'; ?>" id="lkba_voucher_toggle_bank"><?php echo esc_html__('Převodem', 'lkba-vouchers'); ?></p>
-                                </div>
-                                <label class="switch" for="lkba_voucher_payment_toggle">
-                                    <input type="checkbox" id="lkba_voucher_payment_toggle"
-                                           <?php checked($v_card_on); ?>
-                                           aria-label="<?php echo esc_attr__('Způsob platby', 'lkba-vouchers'); ?>">
-                                    <span class="slider round"></span>
-                                </label>
-                                <div class="card-toggle--column">
-                                    <p class="card-toggle--label card-toggle--label_true <?php echo $v_card_on ? 'active' : 'inactive'; ?>" id="lkba_voucher_toggle_card"><?php echo esc_html__('Kartou', 'lkba-vouchers'); ?></p>
-                                </div>
+                            <div class="">
+                                <h2 class="section-title"><?php echo esc_html__('Zvolte způsob platby', 'lkba-vouchers'); ?></h2>
                             </div>
-                            <p class="lkba-voucher-form__pay-status plain taC" id="lkba_voucher_pay_status"
-                               data-bank-label="<?php echo esc_attr__('Platba převodem (QR / proforma)', 'lkba-vouchers'); ?>"
-                               data-card-label="<?php echo esc_attr__('Platba kartou (Comgate)', 'lkba-vouchers'); ?>">
-                                <?php echo esc_html($v_card_on ? __('Platba kartou (Comgate)', 'lkba-vouchers') : __('Platba převodem (QR / proforma)', 'lkba-vouchers')); ?>
-                            </p>
+                            <div class="lkba-pay-tiles" id="lkba_voucher_pay_tiles">
+                                <label class="lkba-pay-tile" for="lkba_voucher_pay_bank">
+                                    <input class="lkba-pay-tile__input" type="radio"
+                                           name="lkba_payment_method"
+                                           id="lkba_voucher_pay_bank"
+                                           value="bank_transfer"
+                                           <?php checked($d_method, 'bank_transfer'); ?>>
+                                    <span class="lkba-pay-tile__face">
+                                        <span class="lkba-pay-tile__icon lkba-pay-tile__icon--bank" aria-hidden="true"
+                                              style="--lkba-pay-icon:url('<?php echo esc_url($pay_assets . 'icon-bank.png'); ?>')"></span>
+                                        <span class="lkba-pay-tile__label"><?php echo esc_html__('Bankovní převod', 'lkba-vouchers'); ?></span>
+                                    </span>
+                                </label>
+                                <label class="lkba-pay-tile" for="lkba_voucher_pay_card">
+                                    <input class="lkba-pay-tile__input" type="radio"
+                                           name="lkba_payment_method"
+                                           id="lkba_voucher_pay_card"
+                                           value="comgate"
+                                           <?php checked($d_method, 'comgate'); ?>>
+                                    <span class="lkba-pay-tile__face">
+                                        <span class="lkba-pay-tile__icon lkba-pay-tile__icon--card" aria-hidden="true">
+                                            <img src="<?php echo esc_url($pay_assets . 'icon-card.png'); ?>" alt="" width="48" height="38" decoding="async">
+                                        </span>
+                                        <span class="lkba-pay-tile__label"><?php echo esc_html__('Platební karta', 'lkba-vouchers'); ?></span>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
                     <?php else : ?>
                         <input type="hidden" name="lkba_payment_method" value="<?php echo esc_attr($methods[0] ?? 'bank_transfer'); ?>">
