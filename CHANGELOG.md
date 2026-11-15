@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.2.5] — 2026-11-15
+
+### Changed
+
+- Voucher payment chooser: swipe slider replaced with tile radios (Bankovní převod / Platební karta); still POSTs `lkba_payment_method` (`bank_transfer` / `comgate`). Icons in `public/assets/payment/`.
+
+## [0.2.4] — 2026-11-11
+
+### Fixed
+
+- Payment swipe: reliably update `p.lkba-voucher-form__pay-status` on change/input/init.
+
+## [0.2.3] — 2026-11-11
+
+### Fixed
+
+- Payment swipe: labels get `.active` / `.inactive` on change + init; status text updates.
+
+## [0.2.2] — 2026-11-11
+
+### Changed
+
+- Payment chooser: legacy swipe slider (`Převodem` / `Kartou`) when both bank + card allowed; still POSTs `lkba_payment_method`.
+
 ## [0.2.1] — 2026-10-30
 
 ### Changed
