@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.9] — 2026-11-22
+
+### Changed
+
+- Payment tiles styling: cream text on selected/hover (`--lkba-pay-cream`), 1px border, gap/margin use theme `--gap` / `--pad-T`.
+
+## [0.2.8] — 2026-11-22
+
+### Changed
+
+- Voucher form: `#lkba_entries_hint` shows allowed lesson counts on load; after first value/qty/all-lessons interaction it shows the calculated price (from `#lkba_total_display`, which stays hidden as calc source).
+
 ## [0.2.7] — 2026-11-15
 
 ### Fixed
