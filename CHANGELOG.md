@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.9] — 2026-11-22
+
+### Changed
+
+- Payment tiles styling: cream text on selected/hover (`--lkba-pay-cream`), 1px border, gap/margin use theme `--gap` / `--pad-T`.
+
 ## [0.2.8] — 2026-11-22
 
 ### Changed
