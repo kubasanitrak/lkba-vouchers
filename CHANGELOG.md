@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.10] — 2026-11-22
+
+### Changed
+
+- Form styling polish: qty nav vertical align, value checkbox offset, pay-tile label weight, card icon invert soften.
+
 ## [0.2.9] — 2026-11-22
 
 ### Changed
