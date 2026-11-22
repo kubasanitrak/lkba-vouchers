@@ -21,6 +21,7 @@
   var down = root.querySelector('.lkba-qty-down');
   var giftToggle = document.getElementById('lkba_is_gift');
   var invoiceToggle = document.getElementById('lkba_want_invoice');
+  var showPriceInHint = false;
 
   function selectedValue() {
     var r = root.querySelector('input[name="lkba_value"]:checked');
@@ -86,35 +87,54 @@
     });
   }
 
+  function formatAllowed(list) {
+    if (!list.length) return '1';
+    if (list.length === 1) return String(list[0]);
+    if (list.length === 2) return list[0] + ' a ' + list[1];
+    return list.slice(0, -1).join(', ') + ' a ' + list[list.length - 1];
+  }
+
+  function formatTotal(total) {
+    return new Intl.NumberFormat('cs-CZ').format(total) + ' Kč';
+  }
+
   function update() {
     var value = selectedValue();
     var list = allowedEntries(value);
     var entries = snapEntries(list, parseInt(entriesInput.value, 10) || 1, 0);
     entriesInput.value = String(entries);
-    if (hint) {
-      hint.textContent = ' (' + list.join(', ') + ')';
-    }
     var showBundle = value === bundleBase && entries >= bundleMin;
     setAllLessonsVisible(showBundle);
     var unit = unitPrice(value, entries, !!(allInput && allInput.checked));
     var total = unit * entries;
+    var totalText = formatTotal(total);
     if (totalEl) {
-      totalEl.textContent = ' · ' + new Intl.NumberFormat('cs-CZ').format(total) + ' Kč';
+      totalEl.textContent = totalText;
+      totalEl.hidden = true;
+      totalEl.setAttribute('aria-hidden', 'true');
+    }
+    if (hint) {
+      hint.textContent = showPriceInHint ? totalText : formatAllowed(list);
     }
   }
 
+  function onConfigInteract() {
+    showPriceInHint = true;
+    update();
+  }
+
   root.querySelectorAll('input[name="lkba_value"]').forEach(function (r) {
-    r.addEventListener('change', update);
+    r.addEventListener('change', onConfigInteract);
   });
-  if (entriesInput) entriesInput.addEventListener('change', update);
-  if (allInput) allInput.addEventListener('change', update);
+  if (entriesInput) entriesInput.addEventListener('change', onConfigInteract);
+  if (allInput) allInput.addEventListener('change', onConfigInteract);
 
   function bindQty(el, dir) {
     if (!el) return;
     el.addEventListener('click', function () {
       var list = allowedEntries(selectedValue());
       entriesInput.value = String(snapEntries(list, parseInt(entriesInput.value, 10) || 1, dir));
-      update();
+      onConfigInteract();
     });
     el.addEventListener('keydown', function (ev) {
       if (ev.key === 'Enter' || ev.key === ' ') {

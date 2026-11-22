@@ -78,8 +78,7 @@ $gift_open  = $d_gift !== '';
                         <div class="signup-form--inner_row mar-B-0">
                             <p class="plain taC">
                                 <?php echo esc_html__('Počet lekcí', 'lkba-vouchers'); ?>
-                                (<span id="lkba_entries_hint" class="lkba-voucher-form__allowed"></span>
-                                (<span id="lkba_total_display" class="lkba-voucher-form__total">—</span>
+                                (<span id="lkba_entries_hint" class="lkba-voucher-form__allowed"></span>)<span id="lkba_total_display" class="lkba-voucher-form__total" hidden aria-hidden="true"></span>
                             </p>
                         </div>
                         <div class="signup-form--inner_row mar-B lkba-voucher-form__qty">
