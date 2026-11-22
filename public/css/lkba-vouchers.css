@@ -134,7 +134,7 @@
 
 .lkba-voucher-form .lkba-pay-tile__label {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.2;
   color: inherit;
 }
@@ -162,4 +162,18 @@
 .lkba-voucher-form .lkba-pay-tile:has(.lkba-pay-tile__input:checked) .lkba-pay-tile__icon--card img,
 .lkba-voucher-form .lkba-pay-tile__input:checked + .lkba-pay-tile__face .lkba-pay-tile__icon--card img {
   filter: brightness(0) invert(1);
+}
+.quantity {
+  margin-block-start: var(--gap);
+}
+.quantity-nav {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lkba-voucher-form__value {
+
+  .custom-checkbox {
+    transform: translateY(0);
+  }
 }
