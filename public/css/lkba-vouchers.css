@@ -104,7 +104,7 @@
   gap: 0.55rem;
   min-height: 6.75rem;
   padding: 1rem 0.85rem 0.9rem;
-  border: 2px solid var(--lkba-pay-green);
+  border: 1px solid var(--lkba-pay-green);
   background: transparent;
   color: inherit;
   text-align: center;
@@ -143,7 +143,7 @@
 .lkba-voucher-form .lkba-pay-tile:focus-within,
 .lkba-voucher-form .lkba-pay-tile.is-selected,
 .lkba-voucher-form .lkba-pay-tile:has(.lkba-pay-tile__input:checked) {
-  color: #fff;
+  color: var(--lkba-pay-cream);
 }
 
 .lkba-voucher-form .lkba-pay-tile:hover .lkba-pay-tile__face,
@@ -153,7 +153,7 @@
 .lkba-voucher-form .lkba-pay-tile__input:checked + .lkba-pay-tile__face {
   background-color: var(--lkba-pay-green);
   border-color: var(--lkba-pay-green);
-  color: #fff;
+  color: var(--lkba-pay-cream);
 }
 
 .lkba-voucher-form .lkba-pay-tile:hover .lkba-pay-tile__icon--card img,
